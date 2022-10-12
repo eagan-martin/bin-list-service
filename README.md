@@ -29,7 +29,7 @@ $ gradlew build --refresh-dependencies
 You can try call the endpoint using:
 
 ```
-$ curl "http://localhost:8080/v1/bin/verify?cardNo=5443"
+$ curl "http://localhost:8080/v1/bin/verify?cardNo=45717360"
 ```
 
 Note: It is suggested to test this using [Postman](https://www.postman.com/) or any other related REST API tool.
