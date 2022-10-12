@@ -17,6 +17,15 @@ import javax.validation.ConstraintViolationException
 import javax.ws.rs.*
 import javax.ws.rs.core.MediaType
 
+/**
+ * Error resource
+ *
+ * This is the class for error handling
+ *
+ * @property tracer
+ * @property log
+ * @constructor Create empty Error resource
+ */
 @Traced
 @ApplicationScoped
 class ErrorResource(
@@ -24,6 +33,15 @@ class ErrorResource(
     private val log: Logger,
 ) {
 
+    /**
+     * On exception
+     *
+     * This defines an action/logic to handle each identified exceptions
+     *
+     * @param exception
+     * @param resp
+     * @return
+     */
     @Route(
         type = Route.HandlerType.FAILURE,
         produces = [MediaType.APPLICATION_JSON]
@@ -219,6 +237,9 @@ class ErrorResource(
                     detail = status.reasonPhrase() ?: "unexpected client web application error",
                 )
             }
+            /**
+             * This is a fail-safe handling for all unidentified exceptions
+             */
             else -> {
                 this.log.warn("$traceId - gracefully handling unidentified/generic exception")
 

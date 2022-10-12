@@ -13,14 +13,32 @@ import ph.skybridge.api.util.TraceUtil
 import java.time.Duration
 import javax.enterprise.context.ApplicationScoped
 
+/**
+ * Bin service impl
+ *
+ * This is the class to implement the service and its features (eg. Bin service, hence BinServiceImpl)
+ *
+ * @property tracer
+ * @property log
+ * @property client
+ * @constructor Create empty Bin impl
+ */
 @Traced
 @ApplicationScoped
-class BinImpl(
+class BinServiceImpl(
     private val tracer: Tracer?,
     private val log: Logger,
     @RestClient private val client: BinClient
-): BinService {
+): BinService { // this indicates that this class is an implementation of a service (eg. BinService)
 
+    /**
+     * Verify card
+     *
+     * This defines the logic for the verifyCard service feature
+     *
+     * @param cardNo
+     * @return
+     */
     override fun verifyCard(cardNo: String): Uni<SuccessResp> {
         val traceId: String = TraceUtil.provideTraceId(tracer)
 
@@ -46,18 +64,23 @@ class BinImpl(
                     "localizedMessage" to exception.localizedMessage,
                     "suppressed" to exception.suppressed,
                     "suppressedExceptions" to exception.suppressedExceptions,
-                    "stackTrace" to "hidden",
-//                    Uncomment the below code if you want to log stackTrace
+                    /**
+                     * Enables stacktrace to be added on the logs
+                     */
 //                    "stackTrace" to stackTrace,
                 )
 
                 this.log.warn("$traceId - an exception has occurred, $data")
             }
-//            Uncomment the below code if you want to transform the exception into another
+            /**
+             * Enables transformation of an expcetion to another
+             */
 //            .onFailure().transform { _ ->
 //                throw ServiceUnavailableException()
 //            }
-//            Uncomment the below code if you want to recover from the exception with an empty response
+            /**
+             * Enables recovery from an exception using an item
+             */
             .onFailure().recoverWithItem { _ ->
                 val recoveryItem = BinResp()
 
